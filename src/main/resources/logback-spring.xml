@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <!--ތ۱Spring boot੒logback෭பጱἕᦊᯈᗝ-->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:${java.io.tmpdir:-/tmp}}}/spring.log}"/>
+    <include resource="org/springframework/boot/logging/logback/consoleappender.xml" />
+    <!--控制台输出配置-->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                %date{yyyy-MM-dd HH:mm:ss.SSS} %-5level[%thread] %logger{56}.%method:%L :%msg%n
+            </pattern>
+        </layout>
+    </appender>
+    <!--᯿ٟԧSpring Boot໛ຝ org/springframework/boot/logging/logback/file-appender.xml ᯈᗝ-->
+    <appender name="TIME_FILE"   class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <file>${LOG_FILE}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE}.%d{yyyy-MMdd}.%i</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <!--           Spring Bootկ෈ப෭҅ӥ٭ఘᦊἕ10M ,կ෈ப෭ړڔտ҅෸ ᬯ໏ᦡᗝ෭ப෈կ տࣁ100Mப෭ړڔ෸            -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="TIME_FILE" />
+    </root>
+</configuration>
